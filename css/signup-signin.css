@@ -1,0 +1,140 @@
+* {
+  font-family: "Quicksand", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* p {
+  margin: 0;
+}
+body {
+  background-color: #eaeaea;
+}
+.background-image {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(0, -50%);
+}
+
+.form-container input {
+  border-radius: 12px !important;
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translate(0, -50%);
+  border-radius: 12px;
+  padding: 20px;
+  width: 25%;
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  backdrop-filter: blur(1px) saturate(180%);
+  background-color: rgba(234, 234, 234, 0.8);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo img {
+  width: 192.3px;
+  height: 144.3px;
+}
+
+.logo h1,
+.logo h1 {
+  color: green;
+  font-weight: 900;
+}
+.forgot-password-container {
+  text-align: right;
+  font-weight: 700;
+}
+.forgot-password-container a {
+  text-decoration: none !important;
+}
+
+.user-name {
+  display: flex;
+  justify-content: space-between;
+}
+.user-name .form-floating {
+  width: 49%;
+}
+
+.button {
+  margin-top: 1.5rem;
+}
+
+.submit-button {
+  height: 50px;
+  width: 100%;
+  border: 1px solid green;
+  color: green;
+  font-size: 18px;
+  font-weight: 900;
+  border-radius: 12px;
+}
+
+.have-account {
+  margin-top: 1rem;
+}
+
+#log-in {
+  text-decoration: underline;
+  font-weight: 900;
+  color: green;
+}
+
+.submit-button:hover {
+  background-color: #4f772d;
+  color: #fff;
+}
+
+.info-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+}
+.info-container input {
+  width: 300px;
+  margin-bottom: 20px;
+  height: 30px;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.info-container .button-container {
+  display: flex;
+  justify-content: space-between;
+}
+.button-container button {
+  width: 60px;
+  height: 30px;
+  border-radius: 12px;
+  border: none;
+  background-color: #9dce72;
+}
+.button-container button:hover {
+  background-color: #4f772d;
+  color: #fff;
+}
+
+@media (max-width: 914px) {
+  .form-container {
+    width: calc(100% - 40px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .logo img {
+    width: 147.9px;
+    height: 111px;
+  }
+}
