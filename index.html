@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../images/icons8-plant-96 - Copy.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+
+    <script type="module" src="./js/signin.js"></script>
+
+    <link rel="stylesheet" href="./css/signup-signin.css" />
+    <title>iGreenGuard</title>
+  </head>
+  <body>
+    <img class="background-image" src="./images/bg2-removebg.png" alt="" />
+    <div class="form-container shadow-lg">
+      <div class="logo">
+        <h1>Sign in</h1>
+        <img
+          src="./images/e277881068ad880b7c54a2851462cc20-removebg-preview.png"
+          alt=""
+        />
+      </div>
+
+      <div class="signin-container">
+        <form class="form-floating" id="sign-in" action="">
+          <div class="form-floating mb-3">
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="name@example.com"
+            />
+            <label for="email">Email address</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+            />
+            <label for="password">Password</label>
+          </div>
+          <div class="forgot-password-container">
+            <span id="forgot-password"
+              ><a href="./html/forgotpassword.html" style="color: green"
+                >Forgot Password?</a
+              ></span
+            >
+          </div>
+          <div class="button">
+            <button type="submit" class="submit-button">Sign in</button>
+          </div>
+        </form>
+        <div class="have-account">
+          <p>
+            Don't have an accout?
+            <span id="log-in"
+              ><a href="./html/signup.html" style="color: green"
+                >Create account</a
+              ></span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="toast"
+      style="position: fixed; top: 5%; left: 50%; transform: translate(-50%, 0)"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      id="registrationToast"
+    >
+      <div class="toast-header">
+        <img
+          src="./images/icons8-water-32-removebg-preview.png"
+          class="rounded me-2"
+          alt="not found!"
+        />
+        <strong class="me-auto">Bootstrap</strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="toast-body">Hello, world! This is a toast message.</div>
+    </div>
+  </body>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"
+  ></script>
+</html>
