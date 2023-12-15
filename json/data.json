@@ -1,0 +1,82 @@
+{
+  "plants": [
+    {
+      "name": "Rose",
+      "id": "p01",
+      "components": [
+        {
+          "componentName": "temperature",
+          "minAngle": 8,
+          "maxAngle": 25
+        },
+        {
+          "componentName": "humidity",
+          "minAngle": 80,
+          "maxAngle": 85
+        },
+        {
+          "componentName": "light",
+          "minAngle": 50,
+          "maxAngle": 90
+        },
+        {
+          "componentName": "soil",
+          "minAngle": 60,
+          "maxAngle": 70
+        }
+      ]
+    },
+    {
+      "name": "Succulent",
+      "id": "p02",
+      "components": [
+        {
+          "componentName": "temperature",
+          "minAngle": 15,
+          "maxAngle": 35
+        },
+        {
+          "componentName": "humidity",
+          "minAngle": 40,
+          "maxAngle": 60
+        },
+        {
+          "componentName": "light",
+          "minAngle": 30,
+          "maxAngle": 60
+        },
+        {
+          "componentName": "soil",
+          "minAngle": 40,
+          "maxAngle": 60
+        }
+      ]
+    },
+    {
+      "name": "Spider Plant",
+      "id": "p03",
+      "components": [
+        {
+          "componentName": "temperature",
+          "minAngle": 15,
+          "maxAngle": 24
+        },
+        {
+          "componentName": "humidity",
+          "minAngle": 40,
+          "maxAngle": 60
+        },
+        {
+          "componentName": "light",
+          "minAngle": 60,
+          "maxAngle": 50
+        },
+        {
+          "componentName": "soil",
+          "minAngle": 40,
+          "maxAngle": 60
+        }
+      ]
+    }
+  ]
+}
