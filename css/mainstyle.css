@@ -50,75 +50,9 @@
   padding: 10px;
 }
 
-.main-container-profile {
-  background-color: #fff;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-}
 
 .bi-list {
   display: none;
-}
-
-.background-before {
-  position: relative;
-  height: 40vh;
-  width: 100vw;
-  background-color: #f4f5f6;
-}
-
-.content {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 45%;
-  width: 60%;
-  height: 70%;
-}
-
-.data {
-  padding: 1% 6%;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.05);
-  height: 100%;
-}
-
-.tab-titles {
-  display: flex;
-  margin: 20px 0 20px;
-}
-
-.tab-links {
-  margin-right: 50px;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  position: relative;
-}
-
-.tab-links::after {
-  content: "";
-  width: 0;
-  height: 3px;
-  background-color: #557c55;
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  transition: 0.5s;
-}
-
-.tab-links.active-link::after {
-  width: 100%;
-}
-
-.tab-contents {
-  display: none;
-}
-
-.tab-contents.active-tab {
-  display: block;
 }
 
 /* ========== 1.1. Nav bar ============ */
@@ -1014,21 +948,5 @@ input[type="number"] {
   }
   #target .target-slider {
     gap: 10px;
-  }
-  .data {
-    height: fit-content;
-    padding-bottom: 5%;
-  }
-  .te {
-    display: none;
-  }
-  .profile-title {
-    margin: 10px;
-  }
-  .content {
-    width: 90%;
-  }
-  .div-title {
-    margin-bottom: 2rem;
   }
 }
