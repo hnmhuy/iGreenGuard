@@ -397,6 +397,479 @@
   } */
 
 /* ----------------------------------------
+|	 3. Plant                              |
+---------------------------------------- */
+
+/* ============= 3.1. Evaluate ==============  */
+
+.evaluate {
+  width: 100%;
+  height: fit-content;
+}
+.evaluate img {
+  width: 100%;
+}
+
+/* ============= 3.2. Recommendation ==============  */
+
+.recommendation h4 {
+  color: green;
+  font-weight: 900;
+}
+
+.recommendation {
+  background-color: #fff;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.choices-image {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: fit-content;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.choices-image > div {
+  border-radius: 15px;
+  height: 351px;
+  width: 201x;
+  overflow: hidden;
+  position: relative;
+}
+
+.choices-image img {
+  height: 350px;
+  width: 200x;
+}
+
+/* .choices-image div:hover {
+  border: 1px solid green;
+} */
+.plant-selected {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  border-radius: 12px;
+  background-color: #cfe1b9;
+  text-align: right;
+  padding: 5px;
+  font-weight: 900;
+  color: green;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.recommend-cancel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(100% - 340px);
+  padding-bottom: 10px;
+}
+
+.recommend-cancel button {
+  cursor: pointer;
+  padding: 5px 15px;
+  background-color: #ee9593;
+  color: red;
+  border-radius: 12px;
+  border: none;
+  font-weight: 900;
+}
+
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  color: rgba(255, 0, 0, 0.459);
+  background-color: #eee;
+}
+.recommend-cancel button:hover {
+  background-color: red;
+}
+
+.recommend-cancel h4 {
+  margin: 0;
+}
+
+/* ---------------- 3.2.1. Button (select + config button) -----------------*/
+
+.select-detail-button {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+}
+
+.select-detail-button button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+  border-radius: 8px;
+  width: 130px;
+  height: 34px;
+}
+
+.select-detail-button p {
+  font-weight: bold;
+  margin: 0;
+}
+
+.select-detail-button .bi-check2-circle {
+  padding-right: 4px;
+  padding-left: 5px;
+  font-size: 1.5rem;
+  color: #3b3b3b;
+  font-weight: bold;
+}
+
+.select-detail-button .bi-info-circle {
+  padding-right: 6px;
+  padding-left: 6px;
+  font-size: 1.3rem;
+  color: #3b3b3b;
+}
+
+.select-detail-button #select {
+  background-color: #b7cbbf;
+}
+
+.select-detail-button #detail {
+  background-color: #e5d0bb;
+}
+
+.select-detail-button .select-button,
+.select-detail-button .detail-button {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  transition: all 0.5s ease;
+}
+
+.select-detail-button .select-button {
+  margin-right: 5px;
+}
+
+.select-detail-button .select-button:hover,
+.select-detail-button .detail-button:hover {
+  width: 90px;
+}
+
+.select-detail-button .select-button:hover #select {
+  background-color: #38b000;
+}
+
+.select-detail-button .detail-button:hover #detail {
+  background-color: #e49b5c;
+}
+
+/* ================= 3.3. Sidepeek ==================== */
+
+.sidepeek-container {
+  width: 793px;
+  background-color: #f7f7f7;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 12;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* --------------- 3.3.1. Header --------------- */
+
+.sidepeek-header,
+.environment-trigger,
+.environment-trigger-header,
+.sidepeek-footer {
+  padding: 30px 30px 0 30px;
+  width: 100%;
+}
+
+.environment-trigger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 120px;
+}
+.temp-humidity > div:first-child,
+.light-soil > div:first-child {
+  margin-bottom: 65px;
+}
+
+.sidepeek-header {
+  position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+.sidepeek-header h4 {
+  font-weight: 900;
+  color: green;
+  margin-bottom: 30px;
+}
+
+.sidepeek-header .bi-x-lg {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  background-color: #f7f7f8;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.sidepeek-header .bi-x-lg:hover {
+  background-color: red;
+  color: #fff;
+}
+.environment-trigger-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.environment-trigger-header h5 {
+  margin: 0;
+  font-weight: 700;
+}
+.environment-trigger-header img {
+  margin-left: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+/* ------------ 3.3.2. Part Container of Sidepeek ------------ */
+
+.watermode-conainer {
+  padding: 0 30px;
+}
+.watermode-conainer > div {
+  margin-top: 10px;
+  font-size: 16px;
+  font-family: 500;
+}
+
+.form-check .bi-info-circle {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+/* ------------ 3.3.3. Double slider ------------ */
+
+.range-slider {
+  width: 300px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  height: 4em;
+  text-align: right;
+}
+
+.range-slider div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.range-slider input[type="range"] {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.3s;
+  background: #c0baba98;
+  border-radius: none;
+  box-shadow: none;
+  border: 0;
+  border-radius: 25px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  z-index: 2;
+  position: relative;
+  box-shadow: none;
+  border: none;
+  height: 13px;
+  width: 13px;
+  border-radius: 25px;
+  background: #557c55;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5px;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  border: 2px solid #cfe1b9;
+}
+
+input[type="number"] {
+  border-radius: 12px;
+  padding: 5px 5px 5px 10px;
+  width: 60px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.range-slider p {
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ----------- 3.3.4. Date choose-------------- */
+.custom-container {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all ease 0.5s;
+}
+.target-container p,
+.date-container p,
+.time-container p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.date-container,
+.time-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-bottom: 20px;
+}
+
+.time-container input {
+  width: 150px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.time-container input:focus {
+  background-color: #cfe1b9;
+}
+
+.date-container div {
+  width: 45px;
+  height: 45px;
+  background-color: #eee;
+  line-height: 45px;
+  text-align: center;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.date-container div.active {
+  background-color: #557c55;
+  color: #fff;
+}
+
+#target .target-slider {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 25px;
+  align-items: center;
+}
+
+/* ----------- 3.3.5. Button (select + cancel button) ----------- */
+
+.sidepeek-footer {
+  margin-top: 20px;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #b7cbbf;
+  padding: 10px 30px;
+  align-items: center;
+}
+
+.select-button-sidepeek {
+  width: 120px;
+  height: 40px;
+  background-color: #cfe1b9;
+  color: green;
+  line-height: 40px;
+  font-weight: 900;
+  border-radius: 12px;
+  text-align: center;
+  transition: all ease 0.2s;
+  cursor: pointer;
+}
+
+.select-button-sidepeek:hover {
+  background-color: green;
+  color: #fff;
+}
+
+.cancel-button {
+  font-weight: 600;
+  color: #00000071;
+  transition: all ease 0.2s;
+  cursor: pointer;
+}
+.cancel-button:hover {
+  font-weight: 900;
+  color: red;
+  text-decoration: underline;
+}
+
+/* ----------------------------------------
+|	 4. Overlay                            |
+---------------------------------------- */
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+  z-index: 11;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* ----------------------------------------
 |	 5. Responsive                         |
 ---------------------------------------- */
 
