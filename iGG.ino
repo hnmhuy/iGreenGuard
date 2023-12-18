@@ -54,6 +54,30 @@ int binChannel[2] = {0, 0};
 
 DHT dht11(PIN_DHT, DHT11);
 
+
+// Define the data range
+#define minSoilMoisture 337 // wet
+#define maxSoilMosture 650 // dry
+#define minLight 1024
+#define maxLight 25
+#define waterThreshold 500
+#define minWater 0 
+#define maxWater 1024
+
+// Enviroment data struct
+
+struct Enviroment {
+  int waterLevel;
+  int light;
+  float temperature;
+  float humidity;
+  int soilMoisture;
+};
+
+int soilMoistureImmediate = 0;
+
+Enviroment env = {0, 0, 0, 0, 0};
+
 struct IGGConfig
 {
     bool pumpStatus;   // true = active; false = off
@@ -150,6 +174,54 @@ void linearOut(int r, int g, int b, int LED[3])
         setColorLed(i * r / 255, i * g / 255, i * b / 255, LED);
         delay(10);
     }
+}
+
+
+//---Enviroment data: light, temperature, humidity, soil moisture, waterLevel
+int readLight() {
+  // This function return the light in range 0 - 100
+  setChannel(PIN_LIGHT);
+  int val = analogRead(SIGNAL);
+  val = map(val, minLight, maxLight, 0, 100);
+  return val;
+}
+
+void readDHT11(float& temperature, float& humidity, DHT &dht11) {
+  temperature = dht11.readTemperature();
+  humidity = dht11.readHumidity();
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("E-DHT11: Failed to read from DHT sensor!");
+  }
+}
+
+int readSoilMosture() {
+  setChannel(PIN_SOIL);
+  int val = analogRead(SIGNAL);
+  val = map(val, minSoilMoisture, maxSoilMosture, 100, 0);
+  return val;
+}
+
+int readWaterLevel() {
+  setChannel(PIN_WATER);
+  int val = analogRead(SIGNAL);
+  val = map(val, minWater, maxWater, 0, 5);
+  return val;
+}
+
+bool readWaterTrigger() {
+  setChannel(PIN_WATER_TRIGGER);
+  int val = analogRead(SIGNAL);
+  if (val <= waterThreshold) 
+    return false;
+  else return true;
+}
+
+void readEnv(Enviroment &env) {
+  env.light = readLight();
+  readDHT11(env.temperature, env.humidity, dht11);
+  env.waterLevel = readWaterLevel();
+  env.soilMoisture = readSoilMosture();
+  Serial.printf("*env light: %d - temp: %f - humi: %f - waterLevel: %d - soilMoisture: %d\n", env.light, env.temperature, env.humidity, env.waterLevel, env.soilMoisture);
 }
 
 void connectwf()
