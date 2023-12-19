@@ -39,7 +39,7 @@ window.forgotPassword = (e) => {
         "Please check your email for reset password. You will be directed to sign in page in 5 seconds";
       registrationToast.classList.add("show");
       setTimeout(() => {
-        window.location.href = "signin.html";
+        window.location.href = "index.html";
       }, 5000); // 5000 milliseconds (5 seconds) delay
     })
     .catch((error) => {

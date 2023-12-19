@@ -75,8 +75,8 @@ let storeUID = async (uid) => {
   const userDoc = doc(users, uid);
   try {
     const snapshot = await getDoc(userDoc);
-    if(snapshot.exists()) {
-      console.log("User document already exists")
+    if (snapshot.exists()) {
+      console.log("User document already exists");
     } else {
       const userData = {
         chipID: null,
@@ -98,7 +98,6 @@ let checkChipIDAndRedicrect = async (uid) => {
   const userDoc = doc(users, uid);
   try {
     const snapshot = await getDoc(userDoc);
-    console.log(snapshot.data());
     if (snapshot.exists()) {
       const userData = snapshot.data();
       if (userData && userData.chipID !== null) {

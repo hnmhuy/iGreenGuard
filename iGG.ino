@@ -42,7 +42,7 @@ unsigned long lastOnLed = 0;
 
 // Define pins
 int MUX[2] = {D1, D2};
-int LED[3] = {D8, D6, D7};
+int LED[3] = {D8, D7, D6};
 #define PIN_WATER 3
 #define PIN_WATER_TRIGGER 2
 #define PIN_DHT D3
@@ -53,6 +53,30 @@ int LED[3] = {D8, D6, D7};
 int binChannel[2] = {0, 0};
 
 DHT dht11(PIN_DHT, DHT11);
+
+// Define the data range
+#define minSoilMoisture 337 // wet
+#define maxSoilMosture 650  // dry
+#define minLight 1024
+#define maxLight 25
+#define waterThreshold 500
+#define minWater 0
+#define maxWater 1024
+
+// Enviroment data struct
+
+struct Enviroment
+{
+    int waterLevel;
+    int light;
+    float temperature;
+    float humidity;
+    int soilMoisture;
+};
+
+int soilMoistureImmediate = 0;
+
+Enviroment env = {0, 0, 0, 0, 0};
 
 struct IGGConfig
 {
@@ -152,11 +176,66 @@ void linearOut(int r, int g, int b, int LED[3])
     }
 }
 
+//---Enviroment data: light, temperature, humidity, soil moisture, waterLevel
+int readLight()
+{
+    // This function return the light in range 0 - 100
+    setChannel(PIN_LIGHT);
+    int val = analogRead(SIGNAL);
+    val = map(val, minLight, maxLight, 0, 100);
+    return val;
+}
+
+void readDHT11(float &temperature, float &humidity, DHT &dht11)
+{
+    temperature = dht11.readTemperature();
+    humidity = dht11.readHumidity();
+    if (isnan(humidity) || isnan(temperature))
+    {
+        Serial.println("E-DHT11: Failed to read from DHT sensor!");
+    }
+}
+
+int readSoilMosture()
+{
+    setChannel(PIN_SOIL);
+    int val = analogRead(SIGNAL);
+    val = map(val, minSoilMoisture, maxSoilMosture, 100, 0);
+    return val;
+}
+
+int readWaterLevel()
+{
+    setChannel(PIN_WATER);
+    int val = analogRead(SIGNAL);
+    val = map(val, minWater, maxWater, 0, 5);
+    return val;
+}
+
+bool readWaterTrigger()
+{
+    setChannel(PIN_WATER_TRIGGER);
+    int val = analogRead(SIGNAL);
+    if (val <= waterThreshold)
+        return false;
+    else
+        return true;
+}
+
+void readEnv(Enviroment &env)
+{
+    env.light = readLight();
+    readDHT11(env.temperature, env.humidity, dht11);
+    env.waterLevel = readWaterLevel();
+    env.soilMoisture = readSoilMosture();
+    Serial.printf("*env light: %d - temp: %f - humi: %f - waterLevel: %d - soilMoisture: %d\n", env.light, env.temperature, env.humidity, env.waterLevel, env.soilMoisture);
+}
+
 void connectwf()
 {
     WiFiManager wm;
     // wm.resetSettings();
-    setColorLed(255, 255, 0, LED);
+    setColorLed(0, 20, 255, LED);
     // Connecting
     wm.setConnectTimeout(60);
     wm.setTimeout(300); // Waiting for 5 minius
@@ -577,4 +656,121 @@ void loop()
         delaytime = millis();
         timeClient.update();
     }
-}
+    void loop()
+    {
+        if (WiFi.status() != WL_CONNECTED)
+        {
+            setColorLed(255, 0, 0, LED);
+            delay(1500);
+            connectwf();
+        }
+        else if (millis() - delaytime > 1000)
+        {
+            delaytime = millis();
+            timeClient.update();
+            env.soilMoisture = readSoilMosture();
+            // Listen to the change in the database
+            bool temp;
+            int int_temp;
+            env.soilMoisture = readSoilMosture();
+            // Update soil moisture to database
+            if (!Firebase.RTDB.setInt(&fbdo, root + "soilMoisture", env.soilMoisture))
+            {
+                Serial.println(fbdo.errorReason());
+            }
+
+            if (Firebase.RTDB.getInt(&fbdo, root + "envTimeOut", &int_temp))
+            {
+                if (int_temp != envTimeOut)
+                {
+                    envTimeOut = int_temp;
+                }
+            }
+            if (Firebase.RTDB.getBool(&fbdo, root + "dataChange", &temp))
+            {
+                if (temp)
+                {
+                    iGGConfig.dataChange = true;
+                    Serial1.println("Data change");
+                    readConfig();
+                    iGGConfig.dataChange = false;
+                    Firebase.RTDB.setBool(&fbdo, root + "dataChange", false);
+                }
+            }
+
+            if (Firebase.RTDB.getBool(&fbdo, root + "pumpStatus", &temp))
+            {
+                if (temp)
+                {
+                    iGGConfig.pumpStatus = temp;
+                    Serial.println("Pump status change");
+                    Firebase.RTDB.getInt(&fbdo, root + "targetSoilMoisture", &soilMoistureImmediate);
+                    watering();
+                    iGGConfig.pumpStatus = false;
+                    Firebase.RTDB.setBool(&fbdo, root + "pumpStatus", false);
+                    delay(100);
+                }
+            }
+
+            if (iGGConfig.isSelectedPlant)
+            {
+                watering();
+            }
+            if (millis() - dataMillis > envTimeOut || dataMillis == 0)
+            {
+                readEnv(env);
+                int count = 0;
+                dataMillis = millis();
+                if (sendEnvData(env))
+                {
+                    Serial.println("Send data successfully");
+                    if (env.temperature >= plantData.temperature_max || env.temperature <= plantData.temperature_min)
+                    {
+                        count++;
+                    }
+                    if (env.humidity <= plantData.humidity_min || env.humidity >= plantData.humidity_max)
+                    {
+                        count++;
+                    }
+                    if (env.soilMoisture <= plantData.soilMoisture_min || env.soilMoisture >= plantData.soilMoisture_max)
+                    {
+                        count++;
+                    }
+                    if (count == 3)
+                    {
+                        setColorLed(255, 128, 0, LED);
+                    }
+                    else if (count == 2)
+                    {
+                        setColorLed(255, 255, 0, LED);
+                    }
+                    else if (count == 1)
+                    {
+                        setColorLed(128, 255, 0, LED);
+                    }
+                    else
+                    {
+                        setColorLed(0, 0, 255, LED);
+                    }
+                }
+                else
+                {
+                    setColorLed(255, 0, 0, LED);
+                    Serial.println("Send data failed");
+                }
+                Firebase.RTDB.setInt(&fbdo, root + "waterLevel", readWaterLevel());
+                if (env.light <= plantData.light_min || env.light >= plantData.light_max)
+                {
+                    count++;
+                }
+                if (readWaterLevel() == 0)
+                {
+                    sendMessage("Water+level+is+low.+Please+refill+the+water!");
+                }
+            }
+            if (millis() - lastOnLed > 10000)
+            {
+                offLED(LED);
+            }
+        }
+    }
