@@ -50,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const onClickPage = (e) => {
-  const uid = sessionStorage.getItem("uid");
+  const urlParams = new URLSearchParams(window.location.search);
+  const uid = urlParams.get("uid");
 
   if (e.id === "home-page") {
     window.location.href = `home.html?uid=${uid}`;
