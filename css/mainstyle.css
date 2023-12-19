@@ -1032,3 +1032,21 @@ input[type="number"] {
     margin-bottom: 2rem;
   }
 }
+
+.water-btn {
+  background-color: transparent;
+  outline: none;
+  border: 0.8px solid #588cfd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  padding: 6px;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+}
+
+.water-btn:hover {
+  background-color: #588cfd4f;
+}
