@@ -58,6 +58,7 @@ var humiditySeries = [];
 var lightSeries = [];
 var temperatureSeries = [];
 var waterLevelSeries = [];
+var soilMoistureSeries = [];
 const todayData = [];
 
 function addDataPoint(data) {
@@ -66,6 +67,7 @@ function addDataPoint(data) {
   lightSeries.push([timeStamp, data.light]);
   temperatureSeries.push([timeStamp, data.temp]);
   waterLevelSeries.push([timeStamp, data.waterLevel]);
+  soilMoistureSeries.push([timeStamp, data.soilMoisture]);
 }
 var chart2 = JSC.chart("chartDiv2", {
   debug: true,
@@ -125,7 +127,7 @@ onSnapshot(q, (querySnapshot) => {
     }
   })
   todayData.push(`${humiditySeries[0][1]} %`);
-  todayData.push(`${waterLevelSeries[0][1]}`);
+  todayData.push(`${soilMoistureSeries[0][1]}`);
   todayData.push(`${lightSeries[0][1]} %`);
   todayData.push(`${temperatureSeries[0][1]} °C`);
   // Update the chart with the new data
@@ -233,7 +235,7 @@ onSnapshot(q2, (querySnapshot) => {
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     avgs[0] += data.humi;
-    avgs[1] += data.waterLevel;
+    avgs[1] += data.soilMoisture;
     avgs[2] += data.light;
     avgs[3] += data.temp;
   });
@@ -248,5 +250,4 @@ onSnapshot(q2, (querySnapshot) => {
     status.querySelector("p:first-child").innerHTML = todayData[i];
     i++;
   });
-
 });

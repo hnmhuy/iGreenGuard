@@ -255,7 +255,7 @@ function setDeviceConfig() {
   setDoc(
     userDoc,
     {
-      plantID: plantId,
+      plantId: plantId,
     },
     { merge: true }
   );
