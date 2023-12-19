@@ -42,7 +42,7 @@ unsigned long lastOnLed = 0;
 
 // Define pins
 int MUX[2] = {D1, D2};
-int LED[3] = {D8, D6, D7};
+int LED[3] = {D8, D7, D6};
 #define PIN_WATER 3
 #define PIN_WATER_TRIGGER 2
 #define PIN_DHT D3
@@ -228,7 +228,7 @@ void connectwf()
 {
     WiFiManager wm;
     // wm.resetSettings();
-    setColorLed(255, 255, 0, LED);
+    setColorLed(0, 20, 255, LED);
     // Connecting
     wm.setConnectTimeout(60);
     wm.setTimeout(300); // Waiting for 5 minius
@@ -578,12 +578,91 @@ void setup()
 }
 
 void loop() {
-     if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED) {
     setColorLed(255, 0, 0, LED);
     delay(1500);
     connectwf();
   } else if (millis() - delaytime > 1000) {
     delaytime = millis();
     timeClient.update();
+    env.soilMoisture = readSoilMosture();
+    // Listen to the change in the database
+    bool temp;
+    int int_temp;
+    env.soilMoisture = readSoilMosture();
+    // Update soil moisture to database
+    if (!Firebase.RTDB.setInt(&fbdo, root + "soilMoisture", env.soilMoisture)) {
+      Serial.println(fbdo.errorReason());
+    }
+
+    if (Firebase.RTDB.getInt(&fbdo, root + "envTimeOut", &int_temp)) {
+      if (int_temp != envTimeOut) {
+        envTimeOut = int_temp;
+      }
+    }
+    if (Firebase.RTDB.getBool(&fbdo, root + "dataChange", &temp)) {
+      if (temp) {
+        iGGConfig.dataChange = true;
+        Serial1.println("Data change");
+        readConfig();
+        iGGConfig.dataChange = false;
+        Firebase.RTDB.setBool(&fbdo, root + "dataChange", false);
+      }
+    }
+
+    if (Firebase.RTDB.getBool(&fbdo, root + "pumpStatus", &temp)) {
+      if (temp) {
+        iGGConfig.pumpStatus = temp;
+        Serial.println("Pump status change");
+        Firebase.RTDB.getInt(&fbdo, root + "targetSoilMoisture", &soilMoistureImmediate);
+        watering();
+        iGGConfig.pumpStatus = false;
+        Firebase.RTDB.setBool(&fbdo, root + "pumpStatus", false);
+        delay(100);
+      }
+    }
+
+    if(iGGConfig.isSelectedPlant) {
+      watering();
+    }
+    if(millis() - dataMillis > envTimeOut || dataMillis == 0) {
+      readEnv(env);
+      int count = 0;
+      dataMillis = millis();
+      if(sendEnvData(env)) {
+        Serial.println("Send data successfully");
+         if (env.temperature >= plantData.temperature_max || env.temperature <= plantData.temperature_min) {
+          count++;
+        }
+        if (env.humidity <= plantData.humidity_min || env.humidity >= plantData.humidity_max) {
+          count++;
+        }
+        if(env.soilMoisture <= plantData.soilMoisture_min || env.soilMoisture >= plantData.soilMoisture_max) {
+          count++;
+        }
+        if (count == 3) {
+          setColorLed(255, 128, 0, LED);
+        } else if (count == 2) {
+          setColorLed(255, 255, 0, LED);
+        } else if (count == 1) {
+          setColorLed(128, 255, 0, LED);
+        } else {
+          setColorLed(0, 0, 255, LED);
+        }
+      } else {
+        setColorLed(255, 0, 0, LED);
+        Serial.println("Send data failed");
+      }
+      Firebase.RTDB.setInt(&fbdo, root + "waterLevel", readWaterLevel());
+      if (env.light <= plantData.light_min || env.light >= plantData.light_max) {
+        count++;
+      }
+      if (readWaterLevel() == 0) {
+        sendMessage("Water+level+is+low.+Please+refill+the+water!");
+      }
+    }
+    if (millis() - lastOnLed > 10000) {
+      offLED(LED);
+    }
   }
 }
