@@ -505,13 +505,76 @@ void setup()
     initSucess = readConfig();
 }
 
-void loop() {
-     if (WiFi.status() != WL_CONNECTED) {
-    setColorLed(255, 0, 0, LED);
-    delay(1500);
-    connectwf();
-  } else if (millis() - delaytime > 1000) {
-    delaytime = millis();
-    timeClient.update();
-  }
+void watering(int target, String mode)
+{
+    // Checking conditions to watering
+    if (!readWaterTrigger() && (env.soilMoisture <= target - 5))
+    {
+        Serial.printf("%s - Watering with target: %d\n", mode, target);
+        onPump();
+        setColorLed(20, 20, 255, LED);
+        wateringStart = millis();
+        // Trigger soil moisture or water trigger or time out
+        while (!readWaterTrigger() && (millis() - wateringStart < wateringTimeout) && (env.soilMoisture < target))
+        {
+            env.soilMoisture = readSoilMosture();
+        }
+        offPump();
+        if (readWaterTrigger() || (millis() - wateringStart >= wateringTimeout))
+        {
+            setColorLed(255, 0, 0, LED);
+            sendMessage("Watering+failed.+Maybe+water+level+is+low+or+water+trigger+is+on+or+timeout");
+        }
+        else
+        {
+            setColorLed(0, 0, 255, LED);
+            sendMessage("Watering+successfully");
+        }
+        wateringStart = millis();
+        dataMillis = millis();
+        delaytime = millis();
+        // Get the water level and send
+        Firebase.RTDB.setInt(&fbdo, root + "waterLevel", readWaterLevel());
+        // Send water level to RTDB
+        if (readWaterLevel() == 0)
+        {
+            sendMessage("Water+level+is+low.+Please+refill+the+water!");
+        }
+    }
+    else
+        return;
+}
+
+void watering()
+{
+    // Get the target base on mode
+    if (iGGConfig.pumpStatus)
+    {
+        watering(soilMoistureImmediate, String("Immediately"));
+    }
+    else if (iGGConfig.wateringMode)
+    {
+        if (isWateringCustome())
+            watering(customeWatering.soilMoisture, String("Custome time"));
+    }
+    else
+    {
+        int avg = (plantData.soilMoisture_max + plantData.soilMoisture_min) / 2;
+        watering(avg, String("Auto"));
+    }
+}
+
+void loop()
+{
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        setColorLed(255, 0, 0, LED);
+        delay(1500);
+        connectwf();
+    }
+    else if (millis() - delaytime > 1000)
+    {
+        delaytime = millis();
+        timeClient.update();
+    }
 }
