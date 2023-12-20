@@ -3,23 +3,24 @@ import {
   getDatabase,
   ref,
   onValue,
-  set, 
-  push, 
+  set,
+  push,
   update,
   get
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-
 
 import {
   getFirestore,
   collection,
   where,
   getDocs,
-  query, orderBy, limit,
+  query,
+  orderBy,
+  limit,
   onSnapshot,
   setDoc,
   getDoc,
-  doc
+  doc,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -49,11 +50,10 @@ const userConfig = await getDoc(userDoc);
 const chipID = userConfig.data().chipID;
 const waterLevelRef = ref(db, `${chipID}/waterLevel`);
 const pumpSatatusRef = ref(db, `${chipID}/pumpStatus`);
-const soilMoistureRef = ref(db, `${chipID}/soilMoisture`); 
+const soilMoistureRef = ref(db, `${chipID}/soilMoisture`);
 const soilMoistureTargetRef = ref(db, `${chipID}/targetSoilMoisture`);
 const sensorDb = collection(fireStore, `${chipID}`);
 const q = query(sensorDb, orderBy("timeStamp", "desc"), limit(50));
-
 
 var humiditySeries = [];
 var lightSeries = [];
@@ -237,7 +237,11 @@ yesterday.setDate(yesterday.getDate() - 1);
 const start = yesterday.getTime() / 1000;
 const end = Date.now() / 1000;
 
-const q2 = query(sensorDb, where("timeStamp", ">=", start), where("timeStamp", "<=", end));
+const q2 = query(
+  sensorDb,
+  where("timeStamp", ">=", start),
+  where("timeStamp", "<=", end)
+);
 // Get data and calaulate average
 const avgs = [0, 0, 0, 0];
 
