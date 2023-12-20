@@ -196,6 +196,18 @@ void readDHT11(float &temperature, float &humidity, DHT &dht11)
     }
 }
 
+void onPump()
+{
+    digitalWrite(PIN_RELAY, LOW);
+    Serial.println("Pump on");
+}
+
+void offPump()
+{
+    digitalWrite(PIN_RELAY, HIGH);
+    Serial.println("Pump off");
+}
+
 int readSoilMosture()
 {
     setChannel(PIN_SOIL);
