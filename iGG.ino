@@ -609,6 +609,7 @@ void watering(int target, String mode)
         while (!readWaterTrigger() && (millis() - wateringStart < wateringTimeout) && (env.soilMoisture < target))
         {
             env.soilMoisture = readSoilMosture();
+            delay(100);
         }
         offPump();
         if (readWaterTrigger() || (millis() - wateringStart >= wateringTimeout))
