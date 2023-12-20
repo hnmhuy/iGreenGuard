@@ -84,19 +84,34 @@
         </div> -->
         <div>
           <div>
-            <div class="background-before">
-            </div>
+            <div class="background-before"></div>
             <div class="content">
               <div class="div-title d-flex align-items-center">
                 <i class="bi bi-list me-2"></i>
-                <h1 class="profile-title" style="color: #008000;font-weight: bold;">Account Setting</h1>
+                <h1
+                  class="profile-title"
+                  style="color: #008000; font-weight: bold"
+                >
+                  Account Setting
+                </h1>
               </div>
-              <p class="te mb-5">You can update your avatar, information, password, etc.</p>
+              <p class="te mb-5">
+                You can update your avatar, information, password, etc.
+              </p>
               <div class="data">
                 <div class="tab-titles">
-                  <h3 class="tab-links active-link mb-3" onclick="opentab('profile')">Profile Setting</h3>
-                  <h3 class="tab-links mb-3" onclick="opentab('password')">Change Password</h3>
-                  <h3 class="tab-links mb-3" onclick="opentab('chipConfig')">Chip ID</h3>
+                  <h3
+                    class="tab-links active-link mb-3"
+                    onclick="opentab('profile')"
+                  >
+                    Profile Setting
+                  </h3>
+                  <h3 class="tab-links mb-3" onclick="opentab('password')">
+                    Change Password
+                  </h3>
+                  <h3 class="tab-links mb-3" onclick="opentab('chipConfig')">
+                    Chip ID
+                  </h3>
                 </div>
                 <div class="tab-contents active-tab" id="profile">
                   <!-- <div class="d-flex align-items-start align-items-sm-center gap-4 mb-3">
@@ -119,32 +134,60 @@
                   <!-- <hr class="mt-0 mb-3" /> -->
                   <div class="row">
                     <div class="col-12">
-                      <form id="formAccountSettings form-check" onsubmit="return false">
+                      <form
+                        id="formAccountSettings form-check"
+                        onsubmit="return false"
+                      >
                         <div class="row">
                           <div class="mb-3 col-md-6">
-                            <label for="new-firstname" class="form-label">First Name</label>
-                            <input class="form-control" type="text" id="new-firstname" name="new-firstname" value="" autofocus />
+                            <label for="new-firstname" class="form-label"
+                              >First Name</label
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="new-firstname"
+                              name="new-firstname"
+                              value=""
+                              autofocus
+                            />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="new-lastname" class="form-label">Last Name</label>
-                            <input class="form-control" type="text" name="new-lastname" id="new-lastname" value="" />
+                            <label for="new-lastname" class="form-label"
+                              >Last Name</label
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              name="new-lastname"
+                              id="new-lastname"
+                              value=""
+                            />
                           </div>
                           <div class="mb-3 col-md-6">
-                            <label for="email-user" class="form-label">E-mail</label>
-                            <input class="form-control" type="text" id="email-user" name="email-user" value=""
-                              placeholder="" disabled />
+                            <label for="email-user" class="form-label"
+                              >E-mail</label
+                            >
+                            <input
+                              class="form-control"
+                              type="text"
+                              id="email-user"
+                              name="email-user"
+                              value=""
+                              placeholder=""
+                              disabled
+                            />
                           </div>
-                          <div class="mb-3 col-md-6">
-                            <label class="form-label" for="phoneNumber">Phone Number</label>
-                            <div class="input-group input-group-merge">
-                              <span class="input-group-text">VN (+84)</span>
-                              <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="" />
-                            </div>
-                          </div>
-          
                         </div>
                         <div class="mt-2">
-                          <button style="background-color: #38b000; color: white;" type="submit" class="btn me-2" onclick="updateUserProfile(this)">Save changes</button>
+                          <button
+                            style="background-color: #38b000; color: white"
+                            type="submit"
+                            class="btn me-2"
+                            onclick="updateUserProfile(this)"
+                          >
+                            Save changes
+                          </button>
                         </div>
                       </form>
                     </div>
@@ -155,18 +198,42 @@
                     <form onsubmit="return false">
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label for="current-password" class="form-label">Current chip ID</label>
-                          <input class="form-control" type="text" id="current-chipId" name="current-chipId" autofocus disabled placeholder="Current chip ID"/>
+                          <label for="current-password" class="form-label"
+                            >Current chip ID</label
+                          >
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="current-chipId"
+                            name="current-chipId"
+                            autofocus
+                            disabled
+                            placeholder="Current chip ID"
+                          />
                         </div>
                       </div>
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label for="confirm-password" class="form-label">New chip ID</label>
-                          <input class="form-control" type="text" id="new-chipId" name="new-chipId" required/>
+                          <label for="confirm-password" class="form-label"
+                            >New chip ID</label
+                          >
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="new-chipId"
+                            name="new-chipId"
+                            required
+                          />
                         </div>
                       </div>
-                      <button style="background-color: #38b000; color: white;" type="submit" class="btn me-2" onclick="updateChipConfig(this)">Save
-                        changes</button>
+                      <button
+                        style="background-color: #38b000; color: white"
+                        type="submit"
+                        class="btn me-2"
+                        onclick="updateChipConfig(this)"
+                      >
+                        Save changes
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -176,24 +243,52 @@
                     <form onsubmit="return false">
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label for="current-password" class="form-label">Current Password</label>
-                          <input class="form-control" type="password" id="current-password" name="current-password" autofocus />
+                          <label for="current-password" class="form-label"
+                            >Current Password</label
+                          >
+                          <input
+                            class="form-control"
+                            type="password"
+                            id="current-password"
+                            name="current-password"
+                            autofocus
+                          />
                         </div>
                       </div>
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label for="new-password" class="form-label">New Password</label>
-                          <input class="form-control" type="password" id="new-password" name="new-password" />
+                          <label for="new-password" class="form-label"
+                            >New Password</label
+                          >
+                          <input
+                            class="form-control"
+                            type="password"
+                            id="new-password"
+                            name="new-password"
+                          />
                         </div>
                       </div>
                       <div class="row">
                         <div class="mb-3 col-md-6">
-                          <label for="confirm-password" class="form-label">Confirm Password</label>
-                          <input class="form-control" type="password" id="confirm-password" name="confirm-password" />
+                          <label for="confirm-password" class="form-label"
+                            >Confirm Password</label
+                          >
+                          <input
+                            class="form-control"
+                            type="password"
+                            id="confirm-password"
+                            name="confirm-password"
+                          />
                         </div>
                       </div>
-                      <button style="background-color: #38b000; color: white;" type="submit" class="btn me-2" onclick="updateUserPassword(this)">Save
-                        changes</button>
+                      <button
+                        style="background-color: #38b000; color: white"
+                        type="submit"
+                        class="btn me-2"
+                        onclick="updateUserPassword(this)"
+                      >
+                        Save changes
+                      </button>
                     </form>
                   </div>
                 </div>

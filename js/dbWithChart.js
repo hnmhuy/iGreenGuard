@@ -3,22 +3,23 @@ import {
   getDatabase,
   ref,
   onValue,
-  set, 
-  push, 
+  set,
+  push,
   update,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-
 
 import {
   getFirestore,
   collection,
   where,
   getDocs,
-  query, orderBy, limit,
+  query,
+  orderBy,
+  limit,
   onSnapshot,
   setDoc,
   getDoc,
-  doc
+  doc,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -48,11 +49,10 @@ const userConfig = await getDoc(userDoc);
 const chipID = userConfig.data().chipID;
 const waterLevelRef = ref(db, `${chipID}/waterLevel`);
 const pumpSatatusRef = ref(db, `${chipID}/pumpStatus`);
-const soilMoistureRef = ref(db, `${chipID}/soilMoisture`); 
+const soilMoistureRef = ref(db, `${chipID}/soilMoisture`);
 const soilMoistureTargetRef = ref(db, `${chipID}/targetSoilMoisture`);
 const sensorDb = collection(fireStore, `${chipID}`);
 const q = query(sensorDb, orderBy("timeStamp", "desc"), limit(50));
-
 
 var humiditySeries = [];
 var lightSeries = [];
@@ -125,7 +125,7 @@ onSnapshot(q, (querySnapshot) => {
     if (change.type === "added") {
       addDataPoint(change.doc.data());
     }
-  })
+  });
   todayData.push(`${humiditySeries[0][1]} %`);
   todayData.push(`${soilMoistureSeries[0][1]}`);
   todayData.push(`${lightSeries[0][1]} %`);
@@ -208,17 +208,18 @@ window.waterNow = function () {
     console.log("Soil Moisture:", soilMoisture);
   });
   let targetSoilMoisture = soilMoisture + 10;
-    if (targetSoilMoisture > 100) {
-      targetSoilMoisture = 100;
-    }
-  
-    // Update the target soil moisture in the database
-    set(soilMoistureTargetRef, targetSoilMoisture);
-    set(pumpSatatusRef, true);
-    
-    toast.querySelector(".toast-body").innerHTML = "Sent water request to the device";
-    toastBootstrap.show();
-}
+  if (targetSoilMoisture > 100) {
+    targetSoilMoisture = 100;
+  }
+
+  // Update the target soil moisture in the database
+  set(soilMoistureTargetRef, targetSoilMoisture);
+  set(pumpSatatusRef, true);
+
+  toast.querySelector(".toast-body").innerHTML =
+    "Sent water request to the device";
+  toastBootstrap.show();
+};
 
 // Query environment data yesterday from firestore
 const yesterday = new Date();
@@ -227,7 +228,11 @@ yesterday.setDate(yesterday.getDate() - 1);
 const start = yesterday.getTime() / 1000;
 const end = Date.now() / 1000;
 
-const q2 = query(sensorDb, where("timeStamp", ">=", start), where("timeStamp", "<=", end));
+const q2 = query(
+  sensorDb,
+  where("timeStamp", ">=", start),
+  where("timeStamp", "<=", end)
+);
 // Get data and calaulate average
 const avgs = [0, 0, 0, 0];
 
@@ -246,7 +251,9 @@ onSnapshot(q2, (querySnapshot) => {
   let i = 0;
 
   document.querySelectorAll(".status").forEach((status) => {
-    status.querySelector("p:last-child").innerHTML = `Yesterday: ${avgs[i].toFixed(2)}`;
+    status.querySelector("p:last-child").innerHTML = `Yesterday: ${avgs[
+      i
+    ].toFixed(2)}`;
     status.querySelector("p:first-child").innerHTML = todayData[i];
     i++;
   });
