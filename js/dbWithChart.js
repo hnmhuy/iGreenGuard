@@ -6,6 +6,7 @@ import {
   set, 
   push, 
   update,
+  get
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
 
@@ -69,6 +70,7 @@ function addDataPoint(data) {
   waterLevelSeries.push([timeStamp, data.waterLevel]);
   soilMoistureSeries.push([timeStamp, data.soilMoisture]);
 }
+
 var chart2 = JSC.chart("chartDiv2", {
   debug: true,
   type: "line spline",
@@ -124,16 +126,24 @@ onSnapshot(q, (querySnapshot) => {
   querySnapshot.docChanges().forEach((change) => {
     if (change.type === "added") {
       addDataPoint(change.doc.data());
+      todayData[0] = `${data.humi} %`;
+      todayData[1] = `${data.soilMoisture}`;
+      todayData[2] = `${data.light} %`;
+      todayData[3] = `${data.temp} °C`;                                 
     }
   })
-  todayData.push(`${humiditySeries[0][1]} %`);
-  todayData.push(`${soilMoistureSeries[0][1]}`);
-  todayData.push(`${lightSeries[0][1]} %`);
-  todayData.push(`${temperatureSeries[0][1]} °C`);
-  // Update the chart with the new data
-  chart2.series(0).options({ points: humiditySeries });
-  chart2.series(1).options({ points: temperatureSeries });
-  chart2.series(2).options({ points: lightSeries });
+
+  if(humiditySeries && soilMoistureSeries && lightSeries && temperatureSeries) {
+    let i = 0;
+    // Update the chart with the new data
+    chart2.series(0).options({ points: humiditySeries });
+    chart2.series(1).options({ points: temperatureSeries });
+    chart2.series(2).options({ points: lightSeries });
+    document.querySelectorAll('.status').forEach((item, index) => {
+      item.querySelector("p:first-child").innerHTML = `${todayData[index] ? todayData[index] : "No Data "}`;
+      i++;
+    })
+  }
 });
 
 var chart = JSC.chart("chartDiv", {
@@ -200,24 +210,24 @@ onValue(waterLevelRef, (snapshot) => {
 const toast = document.getElementById("liveToast");
 const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toast);
 
-window.waterNow = function () {
+window.waterNow = async function () {
   // Get the soil moisture and calculate the target soil moisture
   let soilMoisture = 0;
-  onValue(soilMoistureRef, (snapshot) => {
+  get(soilMoistureRef).then(snapshot => {
     soilMoisture = snapshot.val();
-    console.log("Soil Moisture:", soilMoisture);
-  });
-  let targetSoilMoisture = soilMoisture + 10;
-    if (targetSoilMoisture > 100) {
-      targetSoilMoisture = 100;
-    }
-  
-    // Update the target soil moisture in the database
-    set(soilMoistureTargetRef, targetSoilMoisture);
-    set(pumpSatatusRef, true);
+    console.log(snapshot);
+    let targetSoilMoisture = soilMoisture + 10;
+      if (targetSoilMoisture > 100) {
+        targetSoilMoisture = 100;
+      }
     
-    toast.querySelector(".toast-body").innerHTML = "Sent water request to the device";
-    toastBootstrap.show();
+      // Update the target soil moisture in the database
+      set(soilMoistureTargetRef, targetSoilMoisture);
+      set(pumpSatatusRef, true);
+      
+      toast.querySelector(".toast-body").innerHTML = "Sent water request to the device";
+      toastBootstrap.show();
+  })
 }
 
 // Query environment data yesterday from firestore
@@ -246,8 +256,7 @@ onSnapshot(q2, (querySnapshot) => {
   let i = 0;
 
   document.querySelectorAll(".status").forEach((status) => {
-    status.querySelector("p:last-child").innerHTML = `Yesterday: ${avgs[i].toFixed(2)}`;
-    status.querySelector("p:first-child").innerHTML = todayData[i];
+    status.querySelector("p:last-child").innerHTML = `Yesterday: ${avgs[i] ? avgs[i].toFixed(2) : "No Data"}`;
     i++;
   });
 });
